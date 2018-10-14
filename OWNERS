@@ -1,0 +1,9 @@
+# See the OWNERS
+owners:
+  - tsungming
+approvers:
+  - controller-runtime-admins
+  - controller-runtime-maintainers
+reviewers:
+  - controller-runtime-admins
+  - controller-runtime-maintainers
