@@ -5,13 +5,12 @@ import (
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-
+	. "github.com/tsungming/controller-runtime/pkg/client"
 	kapi "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/tools/cache"
-
-	. "github.com/tsungming/controller-runtime/pkg/client"
 )
 
 var _ = Describe("Indexers", func() {
@@ -62,7 +61,7 @@ var _ = Describe("Indexers", func() {
 	var multiCache *ObjectCache
 
 	BeforeEach(func() {
-		multiCache = NewObjectCache()
+		multiCache = NewObjectCache(scheme.Scheme)
 		podIndexer := cache.NewIndexer(cache.MetaNamespaceKeyFunc, cache.Indexers{
 			cache.NamespaceIndex: cache.MetaNamespaceIndexFunc,
 		})
