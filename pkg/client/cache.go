@@ -14,8 +14,8 @@ import (
 	"k8s.io/apimachinery/pkg/selection"
 	"k8s.io/client-go/tools/cache"
 
-	"github.com/kubernetes-sigs/kubebuilder/pkg/informer"
-	logf "github.com/kubernetes-sigs/kubebuilder/pkg/log"
+	"github.com/tsungming/controller-runtime/pkg/informer"
+	logf "github.com/tsungming/controller-runtime/pkg/log"
 )
 
 var log = logf.KBLog.WithName("object-cache")

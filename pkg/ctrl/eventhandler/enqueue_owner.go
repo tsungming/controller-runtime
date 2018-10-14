@@ -19,10 +19,10 @@ package eventhandler
 import (
 	"fmt"
 
-	"github.com/kubernetes-sigs/kubebuilder/pkg/ctrl/event"
-	"github.com/kubernetes-sigs/kubebuilder/pkg/ctrl/inject"
-	"github.com/kubernetes-sigs/kubebuilder/pkg/ctrl/reconcile"
-	logf "github.com/kubernetes-sigs/kubebuilder/pkg/log"
+	"github.com/tsungming/controller-runtime/pkg/ctrl/event"
+	"github.com/tsungming/controller-runtime/pkg/ctrl/inject"
+	"github.com/tsungming/controller-runtime/pkg/ctrl/reconcile"
+	logf "github.com/tsungming/controller-runtime/pkg/log"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"

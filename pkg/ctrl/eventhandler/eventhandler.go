@@ -17,7 +17,7 @@ limitations under the License.
 package eventhandler
 
 import (
-	"github.com/kubernetes-sigs/kubebuilder/pkg/ctrl/event"
+	"github.com/tsungming/controller-runtime/pkg/ctrl/event"
 	"k8s.io/client-go/util/workqueue"
 )
 

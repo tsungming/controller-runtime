@@ -20,9 +20,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/kubernetes-sigs/kubebuilder/pkg/controller"
-	"github.com/kubernetes-sigs/kubebuilder/pkg/controller/types"
-	"github.com/kubernetes-sigs/kubebuilder/pkg/inject/run"
+	"github.com/tsungming/controller-runtime/pkg/controller"
+	"github.com/tsungming/controller-runtime/pkg/controller/types"
+	"github.com/tsungming/controller-runtime/pkg/inject/run"
 )
 
 func ExampleGenericController_WatchChannel() {

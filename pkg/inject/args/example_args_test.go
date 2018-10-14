@@ -18,8 +18,8 @@ package args_test
 
 import (
 	"flag"
-	"github.com/kubernetes-sigs/kubebuilder/pkg/config"
-	"github.com/kubernetes-sigs/kubebuilder/pkg/inject/args"
+	"github.com/tsungming/controller-runtime/pkg/config"
+	"github.com/tsungming/controller-runtime/pkg/inject/args"
 )
 
 func Example() {

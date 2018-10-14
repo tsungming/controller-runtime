@@ -17,10 +17,10 @@ limitations under the License.
 package source_test
 
 import (
-	"github.com/kubernetes-sigs/kubebuilder/pkg/ctrl"
-	"github.com/kubernetes-sigs/kubebuilder/pkg/ctrl/event"
-	"github.com/kubernetes-sigs/kubebuilder/pkg/ctrl/eventhandler"
-	"github.com/kubernetes-sigs/kubebuilder/pkg/ctrl/source"
+	"github.com/tsungming/controller-runtime/pkg/ctrl"
+	"github.com/tsungming/controller-runtime/pkg/ctrl/event"
+	"github.com/tsungming/controller-runtime/pkg/ctrl/eventhandler"
+	"github.com/tsungming/controller-runtime/pkg/ctrl/source"
 	"k8s.io/api/core/v1"
 )
 
