@@ -1,3 +1,6 @@
+[![Build Status]( https://travis-ci.org/tsungming/controller-runtime.svg?branch=master)](https://travis-ci.org/tsungming/controller-runtime "Travis")
+[![Go Report Card](https://goreportcard.com/badge/github.com/tsungming/controller-runtime)](https://goreportcard.com/report/github.com/tsungming/controller-runtime)
+
 # Kubernetes controller-runtime Project
 
 The Kubernetes controller-runtime Project is a set of go libraries for building Controllers.
