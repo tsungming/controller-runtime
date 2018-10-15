@@ -19,10 +19,10 @@ package reconcile_test
 import (
 	"testing"
 
-	logf "github.com/tsungming/controller-runtime/pkg/log"
-	"github.com/tsungming/controller-runtime/pkg/test"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	logf "github.com/tsungming/controller-runtime/pkg/log"
+	"github.com/tsungming/controller-runtime/pkg/test"
 )
 
 func TestReconcile(t *testing.T) {
