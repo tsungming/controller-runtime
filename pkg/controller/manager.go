@@ -21,12 +21,12 @@ import (
 	"sync"
 
 	"github.com/tsungming/controller-runtime/pkg/client"
-	"github.com/tsungming/controller-runtime/pkg/client/config"
 	"github.com/tsungming/controller-runtime/pkg/controller/reconcile"
 	"github.com/tsungming/controller-runtime/pkg/internal/apiutil"
 	"github.com/tsungming/controller-runtime/pkg/internal/informer"
 	"github.com/tsungming/controller-runtime/pkg/runtime/inject"
 	"k8s.io/api/apps/v1"
+	"k8s.io/apimachinery/pkg/api/meta"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"
@@ -92,8 +92,12 @@ func (cm *controllerManager) NewController(ca Args, r reconcile.Reconcile) (Cont
 	cm.mu.Lock()
 	defer cm.mu.Unlock()
 
+	if r == nil {
+		return nil, fmt.Errorf("must specify Reconcile")
+	}
+
 	if len(ca.Name) == 0 {
-		return nil, fmt.Errorf("must specify name for Controller")
+		return nil, fmt.Errorf("must specify Name for Controller")
 	}
 
 	if ca.MaxConcurrentReconciles <= 0 {
@@ -159,9 +163,6 @@ func (cm *controllerManager) GetFieldIndexer() client.FieldIndexer {
 }
 
 func (cm *controllerManager) Start(stop <-chan struct{}) error {
-	cm.mu.Lock()
-	defer cm.mu.Unlock()
-
 	// Start the Informers.
 	cm.stop = stop
 	cm.informers.Start(stop)
@@ -199,6 +200,9 @@ type ManagerArgs struct {
 	// Scheme is the scheme used to resolve runtime.Objects to GroupVersionKinds / Resources
 	// Defaults to the kubernetes/client-go scheme.Scheme
 	Scheme *runtime.Scheme
+
+	// Mapper is the rest mapper used to map go types to Kubernetes APIs
+	MapperProvider func(c *rest.Config) (meta.RESTMapper, error)
 }
 
 // NewManager returns a new fully initialized Manager.
@@ -207,11 +211,7 @@ func NewManager(args ManagerArgs) (Manager, error) {
 
 	// Initialize a rest.config if none was specified
 	if cm.config == nil {
-		var err error
-		cm.config, err = config.GetConfig()
-		if err != nil {
-			return nil, err
-		}
+		return nil, fmt.Errorf("must specify Config")
 	}
 
 	// Use the Kubernetes client-go scheme if none is specified
@@ -231,7 +231,10 @@ func NewManager(args ManagerArgs) (Manager, error) {
 	objCache := client.NewObjectCache(spi.KnownInformersByType(), cm.scheme)
 	spi.Callbacks = append(spi.Callbacks, objCache)
 
-	mapper, err := apiutil.NewDiscoveryRESTMapper(cm.config)
+	if args.MapperProvider == nil {
+		args.MapperProvider = apiutil.NewDiscoveryRESTMapper
+	}
+	mapper, err := args.MapperProvider(cm.config)
 	if err != nil {
 		log.Error(err, "Failed to get API Group-Resources")
 		return nil, err

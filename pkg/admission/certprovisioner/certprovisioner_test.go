@@ -14,22 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package eventhandler_test
+package certprovisioner
 
-import (
-	"testing"
+import "fmt"
 
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
-	logf "github.com/tsungming/controller-runtime/pkg/runtime/log"
-	"github.com/tsungming/controller-runtime/pkg/test"
-)
-
-func TestEventhandler(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecsWithDefaultAndCustomReporters(t, "Eventhandler Suite", []Reporter{test.NewlineReporter{}})
+func ExampleServiceToCommonName() {
+	fmt.Println(ServiceToCommonName("myservicenamespace", "myservicename"))
+	// Output: myservicename.myservicenamespace.svc
 }
-
-var _ = BeforeSuite(func() {
-	logf.SetLogger(logf.ZapLogger(false))
-})

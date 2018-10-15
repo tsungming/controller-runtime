@@ -14,22 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package eventhandler_test
+package certprovisioner
 
-import (
-	"testing"
-
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
-	logf "github.com/tsungming/controller-runtime/pkg/runtime/log"
-	"github.com/tsungming/controller-runtime/pkg/test"
-)
-
-func TestEventhandler(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecsWithDefaultAndCustomReporters(t, "Eventhandler Suite", []Reporter{test.NewlineReporter{}})
+// Certs hosts a private key, its corresponding serving certificate and
+// the CA certificate that signs the serving certificate.
+type Certs struct {
+	Key    []byte
+	Cert   []byte
+	CACert []byte
 }
 
-var _ = BeforeSuite(func() {
-	logf.SetLogger(logf.ZapLogger(false))
-})
+// CertProvisioner is an interface to provision the serving certificate.
+type CertProvisioner interface {
+	// ProvisionServingCert returns a Certs struct.
+	ProvisionServingCert() (*Certs, error)
+}

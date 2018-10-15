@@ -14,22 +14,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package eventhandler_test
+/*
+Package certprovisioner provides an interface and implementation to provision certificates.
 
-import (
-	"testing"
+Create a implementation instance of certprovisioner.
 
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
-	logf "github.com/tsungming/controller-runtime/pkg/runtime/log"
-	"github.com/tsungming/controller-runtime/pkg/test"
-)
+	cp := SelfSignedCertProvisioner{
+		CommonName: "foo.bar.com"
+	}
 
-func TestEventhandler(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecsWithDefaultAndCustomReporters(t, "Eventhandler Suite", []Reporter{test.NewlineReporter{}})
-}
-
-var _ = BeforeSuite(func() {
-	logf.SetLogger(logf.ZapLogger(false))
-})
+Provision the certificates.
+	certs, err := cp.ProvisionServingCert()
+	if err != nil {
+		// handle error
+	}
+*/
+package certprovisioner
