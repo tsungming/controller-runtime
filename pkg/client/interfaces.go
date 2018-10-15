@@ -4,10 +4,10 @@ import (
 	"context"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/fields"
+	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
-	"k8s.io/apimachinery/pkg/labels"
-	"k8s.io/apimachinery/pkg/fields"
 )
 
 // ObjectKey identifies a Kubernetes Object.
@@ -26,7 +26,6 @@ type ReadInterface interface {
 	// successful call, Items field in the list will be populated with the
 	// result returned from the server.
 	List(ctx context.Context, opts *ListOptions, list runtime.Object) error
-
 }
 
 // WriteInterface knows how to create, delete, and update Kubernetes objects.
@@ -41,7 +40,6 @@ type WriteInterface interface {
 	// struct pointer so that obj can be updated with the content returned by the Server.
 	Update(ctx context.Context, obj runtime.Object) error
 }
-
 
 // Interface knows how to perform CRUD operations on Kubernetes objects.
 type Interface interface {
@@ -129,7 +127,7 @@ func (o *ListOptions) MatchingLabels(lbls map[string]string) *ListOptions {
 	return o
 }
 
-// MatchingLabels is a convenience function that sets the field selector
+// MatchingField is a convenience function that sets the field selector
 // to match the given field, and then returns the options.
 // It mutates the list options.
 func (o *ListOptions) MatchingField(name, val string) *ListOptions {
@@ -151,7 +149,7 @@ func MatchingLabels(lbls map[string]string) *ListOptions {
 	return (&ListOptions{}).MatchingLabels(lbls)
 }
 
-// MatchingLabels is a convenience function that constructs list options
+// MatchingField is a convenience function that constructs list options
 // to match the given field.
 func MatchingField(name, val string) *ListOptions {
 	return (&ListOptions{}).MatchingField(name, val)

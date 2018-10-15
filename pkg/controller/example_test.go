@@ -1,5 +1,5 @@
 /*
-Copyright 2017 The Kubernetes Authors.
+Copyright 2018 The Kubernetes Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -17,31 +17,47 @@ limitations under the License.
 package controller_test
 
 import (
-	"flag"
 	"log"
 
-	"github.com/tsungming/controller-runtime/pkg/config"
+	"github.com/tsungming/controller-runtime/pkg/client/config"
 	"github.com/tsungming/controller-runtime/pkg/controller"
-	"github.com/tsungming/controller-runtime/pkg/inject/run"
+	"github.com/tsungming/controller-runtime/pkg/controller/eventhandler"
+	"github.com/tsungming/controller-runtime/pkg/controller/reconcile"
+	"github.com/tsungming/controller-runtime/pkg/controller/source"
 	corev1 "k8s.io/api/core/v1"
 )
 
-func Example() {
-	// Step 1: Register informers to Watch for Pod events
-	flag.Parse()
-	informerFactory := config.GetKubernetesInformersOrDie()
-	if err := controller.AddInformerProvider(&corev1.Pod{}, informerFactory.Core().V1().Pods()); err != nil {
-		log.Fatalf("Could not set informer %v", err)
+// This example creates a new controller named "pod-controller" with a no-op reconcile function and registers
+// it with the DefaultControllerManager.
+func ExampleController() {
+	cm, err := controller.NewManager(controller.ManagerArgs{Config: config.GetConfigOrDie()})
+	if err != nil {
+		log.Fatal(err)
 	}
-
-	// Step 2: Create a new Pod controller to reconcile Pods changes using the default
-	// reconcile function to print messages on events
-	podController := &controller.GenericController{}
-	if err := podController.Watch(&corev1.Pod{}); err != nil {
-		log.Fatalf("%v", err)
+	_, err = cm.NewController(
+		controller.Args{Name: "pod-controller", MaxConcurrentReconciles: 1},
+		reconcile.Func(func(o reconcile.Request) (reconcile.Result, error) {
+			// Your business logic to implement the API by creating, updating, deleting objects goes here.
+			return reconcile.Result{}, nil
+		}),
+	)
+	if err != nil {
+		log.Fatal(err)
 	}
-	controller.AddController(podController)
+}
 
-	// Step 3: RunInformersAndControllers all informers and controllers
-	controller.RunInformersAndControllers(run.CreateRunArguments())
+// This example watches Pods and enqueues reconcile.Requests with the changed Pod Name and Namespace.
+func ExampleController_Watch() {
+	cm, err := controller.NewManager(controller.ManagerArgs{Config: config.GetConfigOrDie()})
+	if err != nil {
+		log.Fatal(err)
+	}
+	c, err := cm.NewController(controller.Args{Name: "foo-controller"}, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = c.Watch(&source.KindSource{Type: &corev1.Pod{}}, &eventhandler.EnqueueHandler{})
+	if err != nil {
+		log.Fatal(err)
+	}
 }

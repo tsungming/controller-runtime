@@ -19,24 +19,33 @@ package test
 import (
 	"fmt"
 
-	. "github.com/onsi/ginkgo/config"
-	. "github.com/onsi/ginkgo/types"
+	"github.com/onsi/ginkgo"
+	"github.com/onsi/ginkgo/config"
+	"github.com/onsi/ginkgo/types"
 )
 
-// Print a newline after the default Reporter output so that the results are correctly parsed
-// by test automation.
+var _ ginkgo.Reporter = NewlineReporter{}
+
+// NewlineReporter is Reporter that Prints a newline after the default Reporter output so that the results
+// are correctly parsed by test automation.
 // See issue https://github.com/jstemmer/go-junit-report/issues/31
 type NewlineReporter struct{}
 
-func (NewlineReporter) SpecSuiteWillBegin(config GinkgoConfigType, summary *SuiteSummary) {}
+// SpecSuiteWillBegin implements ginkgo.Reporter
+func (NewlineReporter) SpecSuiteWillBegin(config config.GinkgoConfigType, summary *types.SuiteSummary) {
+}
 
-func (NewlineReporter) BeforeSuiteDidRun(setupSummary *SetupSummary) {}
+// BeforeSuiteDidRun implements ginkgo.Reporter
+func (NewlineReporter) BeforeSuiteDidRun(setupSummary *types.SetupSummary) {}
 
-func (NewlineReporter) AfterSuiteDidRun(setupSummary *SetupSummary) {}
+// AfterSuiteDidRun implements ginkgo.Reporter
+func (NewlineReporter) AfterSuiteDidRun(setupSummary *types.SetupSummary) {}
 
-func (NewlineReporter) SpecWillRun(specSummary *SpecSummary) {}
+// SpecWillRun implements ginkgo.Reporter
+func (NewlineReporter) SpecWillRun(specSummary *types.SpecSummary) {}
 
-func (NewlineReporter) SpecDidComplete(specSummary *SpecSummary) {}
+// SpecDidComplete implements ginkgo.Reporter
+func (NewlineReporter) SpecDidComplete(specSummary *types.SpecSummary) {}
 
 // SpecSuiteDidEnd Prints a newline between "35 Passed | 0 Failed | 0 Pending | 0 Skipped" and "--- PASS:"
-func (NewlineReporter) SpecSuiteDidEnd(summary *SuiteSummary) { fmt.Printf("\n") }
+func (NewlineReporter) SpecSuiteDidEnd(summary *types.SuiteSummary) { fmt.Printf("\n") }

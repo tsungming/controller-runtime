@@ -20,7 +20,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/tsungming/controller-runtime/pkg/install"
 	extensionsv1beta1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
 	"k8s.io/client-go/rest"
 	"sigs.k8s.io/testing_frameworks/integration"
@@ -34,21 +33,21 @@ const (
 	defaultEtcdBin          = "/usr/local/kubebuilder/bin/etcd"
 )
 
-// TestEnvironment creates a Kubernetes test environment that will start / stop the Kubernetes control plane and
+// Environment creates a Kubernetes test environment that will start / stop the Kubernetes control plane and
 // install extension APIs
-type TestEnvironment struct {
+type Environment struct {
 	ControlPlane integration.ControlPlane
 	Config       *rest.Config
 	CRDs         []*extensionsv1beta1.CustomResourceDefinition
 }
 
 // Stop stops a running server
-func (te *TestEnvironment) Stop() {
+func (te *Environment) Stop() {
 	te.ControlPlane.Stop()
 }
 
 // Start starts a local Kubernetes server and updates te.ApiserverPort with the port it is listening on
-func (te *TestEnvironment) Start() (*rest.Config, error) {
+func (te *Environment) Start() (*rest.Config, error) {
 	te.ControlPlane = integration.ControlPlane{}
 	if os.Getenv(envKubeAPIServerBin) == "" {
 		te.ControlPlane.APIServer = &integration.APIServer{Path: defaultKubeAPIServerBin}
@@ -75,21 +74,9 @@ func (te *TestEnvironment) Start() (*rest.Config, error) {
 		Host: te.ControlPlane.APIURL().Host,
 	}
 
-	// Add CRDs to the apiserver
-	err = install.NewInstaller(te.Config).Install(&InstallStrategy{crds: te.CRDs})
-
 	// Wait for discovery service to register CRDs
 	// TODO: Poll for this or find a better way of ensuring CRDs are registered in discovery
 	time.Sleep(time.Second * 1)
 
 	return te.Config, err
-}
-
-type InstallStrategy struct {
-	install.EmptyInstallStrategy
-	crds []*extensionsv1beta1.CustomResourceDefinition
-}
-
-func (s *InstallStrategy) GetCRDs() []*extensionsv1beta1.CustomResourceDefinition {
-	return s.crds
 }

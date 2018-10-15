@@ -25,8 +25,8 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func ExampleAdmissionFunc() {
-	var _ admission.AdmissionFunc = func(review v1beta1.AdmissionReview) *v1beta1.AdmissionResponse {
+func ExampleFunc() {
+	var _ admission.Func = func(review v1beta1.AdmissionReview) *v1beta1.AdmissionResponse {
 		pod := corev1.Pod{}
 		resourceType := metav1.GroupVersionResource{Group: "", Version: "v1", Resource: "pods"}
 		if errResp := admission.Decode(review, &pod, resourceType); errResp != nil {

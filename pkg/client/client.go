@@ -5,19 +5,17 @@ import (
 	"reflect"
 	"sync"
 
+	"github.com/tsungming/controller-runtime/pkg/internal/apiutil"
 	"k8s.io/apimachinery/pkg/api/meta"
 	"k8s.io/apimachinery/pkg/runtime"
 	serializer "k8s.io/apimachinery/pkg/runtime/serializer"
 	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"
-
-	"github.com/tsungming/controller-runtime/pkg/ctrl/common"
 )
 
 var _ Interface = &Client{}
 
-// client is an Interface that works by reading and writing
-// directly from/to an API server.
+// Client is an Interface that works by reading and writing directly from/to an API server.
 type Client struct {
 	Config *rest.Config
 	Scheme *runtime.Scheme
@@ -49,11 +47,11 @@ func (c *Client) init() {
 }
 
 func (c *Client) makeClient(obj runtime.Object) (rest.Interface, string, error) {
-	gvk, err := common.GVKForObject(obj, c.Scheme)
+	gvk, err := apiutil.GVKForObject(obj, c.Scheme)
 	if err != nil {
 		return nil, "", err
 	}
-	client, err := common.RESTClientForGVK(gvk, c.Config, c.codecs)
+	client, err := apiutil.RESTClientForGVK(gvk, c.Config, c.codecs)
 	if err != nil {
 		return nil, "", err
 	}
@@ -64,7 +62,7 @@ func (c *Client) makeClient(obj runtime.Object) (rest.Interface, string, error) 
 	return client, mapping.Resource, nil
 }
 
-// ClientFor returns a raw rest.Interface for the given object type.
+// clientFor returns a raw rest.Interface for the given object type.
 func (c *Client) clientFor(obj runtime.Object) (rest.Interface, string, error) {
 	c.init()
 	typ := reflect.TypeOf(obj)
@@ -91,6 +89,7 @@ func (c *Client) clientFor(obj runtime.Object) (rest.Interface, string, error) {
 	return client, resource, nil
 }
 
+// Create implements Interface
 func (c *Client) Create(ctx context.Context, obj runtime.Object) error {
 	client, resource, err := c.clientFor(obj)
 	if err != nil {
@@ -108,6 +107,7 @@ func (c *Client) Create(ctx context.Context, obj runtime.Object) error {
 		Into(obj)
 }
 
+// Update implements Interface
 func (c *Client) Update(ctx context.Context, obj runtime.Object) error {
 	client, resource, err := c.clientFor(obj)
 	if err != nil {
@@ -126,6 +126,7 @@ func (c *Client) Update(ctx context.Context, obj runtime.Object) error {
 		Into(obj)
 }
 
+// Delete implements Interface
 func (c *Client) Delete(ctx context.Context, obj runtime.Object) error {
 	client, resource, err := c.clientFor(obj)
 	if err != nil {
@@ -143,6 +144,7 @@ func (c *Client) Delete(ctx context.Context, obj runtime.Object) error {
 		Error()
 }
 
+// Get implements Interface
 func (c *Client) Get(ctx context.Context, key ObjectKey, obj runtime.Object) error {
 	client, resource, err := c.clientFor(obj)
 	if err != nil {
@@ -156,6 +158,7 @@ func (c *Client) Get(ctx context.Context, key ObjectKey, obj runtime.Object) err
 		Into(obj)
 }
 
+// List implements Interface
 func (c *Client) List(ctx context.Context, opts *ListOptions, obj runtime.Object) error {
 	client, resource, err := c.clientFor(obj)
 	if err != nil {
