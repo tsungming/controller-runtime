@@ -16,27 +16,8 @@
 
 set -e
 
-# Enable tracing in this script off by setting the TRACE variable in your
-# environment to any value:
-#
-# $ TRACE=1 test.sh
-TRACE=${TRACE:-""}
-if [ -n "$TRACE" ]; then
-  set -x
-fi
-
-# Turn colors in this script off by setting the NO_COLOR variable in your
-# environment to any value:
-#
-# $ NO_COLOR=1 test.sh
-NO_COLOR=${NO_COLOR:-""}
-if [ -z "$NO_COLOR" ]; then
-  header=$'\e[1;33m'
-  reset=$'\e[0m'
-else
-  header=''
-  reset=''
-fi
+hack_dir=$(dirname ${BASH_SOURCE})
+source ${hack_dir}/common.sh
 
 k8s_version=1.10.1
 goarch=amd64
@@ -55,10 +36,6 @@ fi
 
 tmp_root=/tmp
 kb_root_dir=$tmp_root/kubebuilder
-
-function header_text {
-  echo "$header$*$reset"
-}
 
 # Skip fetching and untaring the tools by setting the SKIP_FETCH_TOOLS variable
 # in your environment to any value:
@@ -86,60 +63,17 @@ function fetch_kb_tools {
   tar -zvxf "$kb_tools_archive_path" -C "$tmp_root/"
 }
 
-function setup_envs {
-  header_text "setting up env vars"
+header_text "using tools"
 
-  # Setup env vars
-  export TEST_ASSET_KUBECTL=$kb_root_dir/bin/kubectl
-  export TEST_ASSET_KUBE_APISERVER=$kb_root_dir/bin/kube-apiserver
-  export TEST_ASSET_ETCD=$kb_root_dir/bin/etcd
-}
-
-# fetch the testing binaries - e.g. apiserver and etcd
+which gometalinter.v2
 fetch_kb_tools
-
-# setup testing env
 setup_envs
 
-header_text "running go vet"
+${hack_dir}/verify.sh
+${hack_dir}/test-all.sh
 
-go vet ./pkg/...
-
-header_text "running golint"
-
-golint -set_exit_status ./pkg/...
-
-header_text "running gometalinter.v2"
-
-gometalinter.v2 --disable-all \
-    --deadline 5m \
-    --enable=misspell \
-    --enable=structcheck \
-    --enable=golint \
-    --enable=deadcode \
-    --enable=goimports \
-    --enable=errcheck \
-    --enable=varcheck \
-    --enable=goconst \
-    --enable=unparam \
-    --enable=ineffassign \
-    --enable=nakedret \
-    --enable=interfacer \
-    --enable=misspell \
-    --enable=gocyclo \
-    --line-length=170 \
-    --enable=lll \
-    --dupl-threshold=400 \
-    --enable=dupl \
-    ./pkg/...
-# TODO: Enable these as we fix them to make them pass
-#    --enable=maligned \
-#    --enable=safesql \
-
-header_text "running go test"
-
-go test ./pkg/...
-
-header_text "running go install"
-
+header_text "confirming example compiles (via go install)"
 go install ./example
+
+echo "passed"
+exit 0
