@@ -1,5 +1,6 @@
 [![Build Status]( https://travis-ci.org/tsungming/controller-runtime.svg?branch=master)](https://travis-ci.org/tsungming/controller-runtime "Travis")
 [![Go Report Card](https://goreportcard.com/badge/github.com/tsungming/controller-runtime)](https://goreportcard.com/report/github.com/tsungming/controller-runtime)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ftsungming%2Fcontroller-runtime.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Ftsungming%2Fcontroller-runtime?ref=badge_shield)
 
 # Kubernetes controller-runtime Project
 
