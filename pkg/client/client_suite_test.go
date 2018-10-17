@@ -29,7 +29,8 @@ import (
 
 func TestSource(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecsWithDefaultAndCustomReporters(t, "Controller Integration Suite", []Reporter{envtest.NewlineReporter{}})
+	RunSpecs(t, "Controller Integration Suite")
+	// RunSpecsWithDefaultAndCustomReporters(t, "Controller Integration Suite", []Reporter{envtest.NewlineReporter{}})
 }
 
 var testenv *envtest.Environment
