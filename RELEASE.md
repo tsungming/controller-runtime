@@ -6,4 +6,4 @@ The Kubernetes controller-runtime Project is released on an as-needed basis. The
 - 2 [OWNERS](OWNERS) must LGTM this release
 - An OWNER runs `git tag -s $VERSION` and inserts the changelog and pushes the tag with `git push $VERSION`
 - The release issue is closed
-- Auto merge
+- Auto Deleting Merged Branch
