@@ -1,5 +1,7 @@
 [![Build Status]( https://travis-ci.org/tsungming/controller-runtime.svg?branch=master)](https://travis-ci.org/tsungming/controller-runtime "Travis")
 [![Go Report Card](https://goreportcard.com/badge/github.com/tsungming/controller-runtime)](https://goreportcard.com/report/github.com/tsungming/controller-runtime)
+[![codecov](https://codecov.io/gh/tsungming/controller-runtime/branch/master/graph/badge.svg)](https://codecov.io/gh/tsungming/controller-runtime)
+
 
 # Kubernetes controller-runtime Project
 
