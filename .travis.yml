@@ -13,15 +13,22 @@ git:
 go_import_path: github.com/tsungming/controller-runtime
 
 install:
-- go get -u github.com/golang/dep/cmd/dep
-#- go get -u golang.org/x/lint/golint
-- go get -u gopkg.in/alecthomas/gometalinter.v2 && gometalinter.v2 --install
-
+  - go get -u golang.org/x/vgo
 script:
-- TRACE=1 ./hack/test-ci.sh
-
+  - vgo test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+
+
+#- go get -u github.com/golang/dep/cmd/dep
+#- go get -u golang.org/x/lint/golint
+#- go get -u gopkg.in/alecthomas/gometalinter.v2 && gometalinter.v2 --install
+
+#script:
+#- TRACE=1 ./hack/test-ci.sh
+
+#after_success:
+#  - bash <(curl -s https://codecov.io/bash)
 
 
 # TBD. Suppressing for now.
