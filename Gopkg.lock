@@ -662,7 +662,7 @@
   version = "v1.1.0"
 
 [[projects]]
-  digest = "1:c52caf7bd44f92e54627a31b85baf06a68333a196b3d8d241480a774733dcf8b"
+  digest = "1:8e22fc6a99b3054c643f020c29a8e5c7809e75292b4960b26b60f717a201b6dc"
   name = "go.uber.org/zap"
   packages = [
     ".",
@@ -673,8 +673,8 @@
     "zapcore",
   ]
   pruneopts = "UT"
-  revision = "ff33455a0e382e8a81d14dd7c922020b6b5e7982"
-  version = "v1.9.1"
+  revision = "feeb9a050b31b40eec6f2470e7599eeeadfe5bdd"
+  version = "v1.15.0"
 
 [[projects]]
   branch = "master"
@@ -1129,7 +1129,7 @@
   revision = "c106140daf37a5d2b7a513726091a5eb8107e8b9"
 
 [[projects]]
-  digest = "1:b08a45828b09ce543aea649464635291107f53fd21465c0ab00a867b4418fa15"
+  digest = "1:5919b80013fe2204af836990cf255fc100d7d7cb077ec524c7518ff272e9a633"
   name = "k8s.io/client-go"
   packages = [
     "discovery",
