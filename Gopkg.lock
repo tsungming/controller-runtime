@@ -534,7 +534,7 @@
   version = "v1.6.0"
 
 [[projects]]
-  digest = "1:58418daa018f162c520512737c19ecd42582524b0f900f2eee7c212ce55cf0da"
+  digest = "1:07a376627678fdc71a579cd8c35b22b6f1fd0d47f14945fb8e30630defef850e"
   name = "github.com/onsi/gomega"
   packages = [
     ".",
@@ -553,8 +553,8 @@
     "types",
   ]
   pruneopts = "UT"
-  revision = "b6ea1ea48f981d0f615a154a45eabb9dd466556d"
-  version = "v1.4.1"
+  revision = "904ac6ab26e9a888bdff3467eea03b6122a1c027"
+  version = "v1.10.1"
 
 [[projects]]
   digest = "1:361de06aa7ae272616cbe71c3994a654cc6316324e30998e650f7765b20c5b33"
@@ -773,6 +773,17 @@
   packages = ["rate"]
   pruneopts = "UT"
   revision = "fbb02b2291d28baffd63558aa44b4b56f178d650"
+
+[[projects]]
+  branch = "master"
+  digest = "1:918a46e4a2fb83df33f668f5a6bd51b2996775d073fce1800d3ec01b0a5ddd2b"
+  name = "golang.org/x/xerrors"
+  packages = [
+    ".",
+    "internal",
+  ]
+  pruneopts = "UT"
+  revision = "9bdfabe68543c54f90421aeb9a60ef8061b5b544"
 
 [[projects]]
   digest = "1:c8907869850adaa8bd7631887948d0684f3787d0912f1c01ab72581a6c34432e"
@@ -1129,7 +1140,7 @@
   revision = "c106140daf37a5d2b7a513726091a5eb8107e8b9"
 
 [[projects]]
-  digest = "1:b08a45828b09ce543aea649464635291107f53fd21465c0ab00a867b4418fa15"
+  digest = "1:5919b80013fe2204af836990cf255fc100d7d7cb077ec524c7518ff272e9a633"
   name = "k8s.io/client-go"
   packages = [
     "discovery",
